@@ -1,0 +1,135 @@
+{
+  "project": "Manga Panel Gallery",
+  "currentMilestone": "Six-panel vertical slice",
+  "agentRunDiagnostics": [
+    {
+      "date": "2026-07-20",
+      "sourceRuns": [
+        ".agent/runs/20260719T200624Z-001.final.md",
+        ".agent/runs/20260719T200624Z-001.log",
+        ".agent/runs/20260719T201109Z-002.final.md",
+        ".agent/runs/20260719T201109Z-002.log"
+      ],
+      "unsuccessfulOutcome": "MG-003 was left pending because the previous agent could not complete required live viewport validation. `./scripts/verify.sh` passed, but `next dev`/`next start` could not bind localhost inside the sandbox (`listen EPERM`), Playwright browser install was blocked by restricted network (`ENOTFOUND cdn.playwright.dev`), and system Chrome headless produced no usable DOM or screenshot output in that sandbox.",
+      "rerunDiagnosis": "Rerunning with the local Next server and Chrome allowed outside the sandbox resolved the environment blocker: `./scripts/verify.sh` passed and live measurements at 320px, 768px, and 1440px showed no horizontal overflow. The rerun also exposed a real MG-003 quality issue: `.imageFrame` is a `figure`, and default browser figure margins remain active on mobile, shrinking each 320px viewport image frame to about 208px with 40px side margins. That makes metadata feel too competitive with the artwork and weakens the artwork-dominance acceptance criterion.",
+      "resolutionBeforeNextTask": [
+        "Do not advance to MG-004 until MG-003 is completed.",
+        "Repair MG-003 by resetting the gallery figure margins, for example set `.imageFrame { margin: 0; width: 100%; }` in `src/components/gallery/panel-gallery.module.css` while preserving natural image ratios and the existing editorial rhythm.",
+        "Validate MG-003 with `./scripts/verify.sh`, then run live browser checks against a local Next server at 320px, 768px, and 1440px. If sandboxed server or browser commands fail with `listen EPERM`, `kill EPERM`, or browser-launch failures, rerun those validation commands outside the sandbox rather than incrementing task attempts for an environment-only failure.",
+        "Only mark MG-003 complete after the repaired mobile gallery keeps artwork visually dominant, has no horizontal overflow at the required widths, and the visual-rubric score is at least 9/12."
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "MG-001",
+      "title": "Create the design-token foundation",
+      "status": "complete",
+      "attempts": 0,
+      "description": "Define the paper, ink, typography, spacing, border, and motion primitives used throughout the site.",
+      "acceptanceCriteria": [
+        "Global paper, ink, muted ink, border, and accent variables exist",
+        "The root layout loads display and body typography through next/font",
+        "No gallery, filtering, modal, or animation feature is added",
+        "The page works at 320px without horizontal overflow",
+        "Lint, type checking, and production build pass"
+      ],
+      "allowedAreas": [
+        "src/app/layout.tsx",
+        "src/app/globals.css",
+        "src/app/page.tsx"
+      ],
+      "validation": [
+        "./scripts/verify.sh"
+      ]
+    },
+    {
+      "id": "MG-002",
+      "title": "Create the canonical panel data model",
+      "status": "complete",
+      "attempts": 0,
+      "description": "Add typed metadata for six representative placeholder panels.",
+      "acceptanceCriteria": [
+        "One canonical MangaPanel interface exists",
+        "Six panels cover portrait, landscape, square, and spread formats",
+        "No component contains duplicated panel metadata",
+        "The model can support at least 100 records without structural changes",
+        "Lint, type checking, and production build pass"
+      ],
+      "allowedAreas": [
+        "src/data",
+        "src/types"
+      ],
+      "validation": [
+        "./scripts/verify.sh"
+      ]
+    },
+    {
+      "id": "MG-003",
+      "title": "Build the editorial gallery composition",
+      "status": "complete",
+      "attempts": 8,
+      "description": "Render the six panels as a responsive editorial exhibition.",
+      "acceptanceCriteria": [
+        "Panels are rendered from the canonical data source",
+        "The layout is not a uniform card grid",
+        "DOM order remains logical and accessible",
+        "Portrait and spread artwork do not appear awkwardly cropped",
+        "Artwork remains the dominant element",
+        "The layout passes at 320px, 768px, and 1440px",
+        "Lint, type checking, and production build pass"
+      ],
+      "allowedAreas": [
+        "src/components/gallery",
+        "src/app/page.tsx"
+      ],
+      "validation": [
+        "./scripts/verify.sh"
+      ]
+    },
+    {
+      "id": "MG-004",
+      "title": "Implement the panel detail experience",
+      "status": "complete",
+      "attempts": 1,
+      "description": "Create an accessible detail experience with URL-backed selection.",
+      "acceptanceCriteria": [
+        "A panel can be opened and closed using the keyboard",
+        "Escape closes the view",
+        "Left and right arrows navigate between panels",
+        "Focus returns to the triggering element",
+        "The selected panel is represented in the URL",
+        "Mobile uses an immersive reading layout",
+        "Lint, type checking, and production build pass"
+      ],
+      "allowedAreas": [
+        "src/components/gallery",
+        "src/app/panels"
+      ],
+      "validation": [
+        "./scripts/verify.sh"
+      ]
+    },
+    {
+      "id": "MG-005",
+      "title": "Implement the panel detail experience",
+      "status": "complete",
+      "attempts": 0,
+      "description": "Update the web app to use Vercel Analytics for pageview and event tracking.",
+      "acceptanceCriteria": [
+        "Vercel Analytics is installed and configured",
+        "Pageviews are tracked for the gallery and panel detail views",
+        "Events are tracked for panel open, close, and navigation actions",
+        "Lint, type checking, and production build pass"
+      ],
+      "allowedAreas": [
+        "src/app/layout.tsx",
+        "src/app/globals.css",
+        "src/components/gallery"
+      ],
+      "validation": [
+        "./scripts/verify.sh"
+      ]
+    }
+  ]
+}
