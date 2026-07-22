@@ -1,488 +1,418 @@
-# Manga Panel Gallery — Product Specification
+# Product Specification
 
-## 1. Product summary
+## 1. Purpose
 
-Manga Panel Gallery is a curated digital exhibition for a personal collection of favorite manga panels.
+This document defines what the product should do, who it serves, and how success
+will be evaluated. It should describe user-facing behavior and product scope
+without prescribing unnecessary implementation details.
 
-The product should feel closer to a contemporary art exhibition, Japanese editorial publication, and carefully paced manga-reading experience than a conventional image gallery. The artwork is always the primary visual element. Interface controls, metadata, and commentary should support the work without competing with it.
+Use this file as the authoritative source for:
 
-The first release will present a polished six-panel vertical slice and establish a structure that can scale cleanly to 20–100 panels.
+- Product goals and non-goals
+- Target users and primary workflows
+- Functional requirements
+- Accessibility, responsiveness, and performance expectations
+- Acceptance criteria for major milestones
 
----
-
-## 2. Product goals
-
-### Primary goals
-
-- Present favorite manga panels as a curated exhibition rather than a generic image grid.
-- Give each panel enough visual space and context to feel intentional.
-- Support a growing collection of at least 100 panels without manually building separate page layouts.
-- Make individual panels discoverable and shareable through stable URLs.
-- Provide an excellent experience across desktop, tablet, and mobile.
-- Create a repository structure that works well with iterative, agent-assisted development.
-
-### Secondary goals
-
-- Allow visitors to search and filter the collection.
-- Preserve the emotional and narrative context of each selected panel.
-- Make the site feel personal through curatorial commentary.
-- Support future additions such as essays, collections, and thematic exhibitions without requiring a rewrite.
+Keep this document specific enough for implementation decisions, but generic
+enough that it does not depend on one feature, brand, or application domain
+unless the project itself requires that specificity.
 
 ---
 
-## 3. Product principles
+## 2. Product Summary
 
-### Artwork first
+Describe the product in one or two short paragraphs.
 
-Panel imagery must dominate the composition. Metadata, controls, decorative elements, and animation must remain visually subordinate.
+Include:
 
-### Curated, not cataloged
+- What the product is
+- The core user problem it solves
+- The primary user experience it should provide
+- The expected scale of the initial release
+- Any important constraints or assumptions
 
-The gallery should communicate sequence, rhythm, contrast, and intention. It should not resemble an ecommerce listing, Pinterest board, dashboard, or uniform card grid.
+Template:
 
-### Editorial asymmetry
-
-Variation should come from panel proportions, layout spans, sequencing, and negative space. Avoid arbitrary decoration or visual noise.
-
-### Manga-aware presentation
-
-Portrait panels, landscape panels, square panels, and double-page spreads must be handled intentionally. Important artwork must not be cropped by default.
-
-### Quiet interaction
-
-Motion should be restrained, deliberate, and functional. The static composition must work before animation is added.
-
-### Progressive complexity
-
-The initial product should use local content and static generation. A database, CMS, authentication, and user-generated features are explicitly deferred.
+```text
+[Product name] is a [product category] for [target users] who need to
+[primary job or outcome]. The initial release focuses on [scope] and should
+establish a foundation that can grow to [expected future scale].
+```
 
 ---
 
-## 4. Target users
+## 3. Product Goals
 
-### Primary user
+### Primary Goals
 
-A visitor who enjoys manga and wants to explore a thoughtfully curated collection of memorable panels.
+- Define the main outcome the product must achieve.
+- Identify the user workflow that must feel excellent.
+- Clarify what must be reliable, discoverable, shareable, or reusable.
+- State the expected supported scale for the first durable version.
 
-### Secondary user
+### Secondary Goals
 
-The site owner, who wants to add, annotate, organize, and publish additional panels with minimal engineering effort.
+- List useful but lower-priority improvements.
+- Include future-facing needs that should influence structure but not dominate
+  the MVP.
+- Note product qualities that matter but are not required for the first
+  milestone.
 
----
+### Non-Goals
 
-## 5. Core user journeys
-
-### Journey A: Enter the exhibition
-
-1. The visitor lands on the homepage.
-2. They see an exhibition title, a short curatorial statement, and a featured panel.
-3. They enter or scroll into the collection.
-4. The visual rhythm communicates that this is a curated experience rather than a standard gallery.
-
-### Journey B: Browse the collection
-
-1. The visitor moves through an editorial gallery.
-2. They see panels in different proportions and compositional roles.
-3. Each panel includes restrained supporting information such as rank, series, chapter, and a short commentary excerpt.
-4. The visitor can open a panel for a focused view.
-
-### Journey C: Explore a panel
-
-1. The visitor opens a panel.
-2. The full artwork appears without unintended cropping.
-3. They can read series, creator, chapter, arc, themes, characters, and personal commentary.
-4. They navigate to the previous or next panel.
-5. They can close the focused view and return to the same position in the gallery.
-
-### Journey D: Search or filter
-
-1. The visitor searches by title, series, character, arc, or theme.
-2. The gallery updates while preserving its editorial character.
-3. Active filters are represented in the URL.
-4. The visitor can clear the filters and return to the full collection.
-
-### Journey E: Open a shared link
-
-1. The visitor opens a direct panel URL.
-2. The panel detail page loads independently of the gallery.
-3. The page contains complete metadata, commentary, and navigation.
-4. Social and search metadata correctly describe the selected panel.
+- List capabilities that should not be built yet.
+- Exclude features that would add infrastructure, complexity, or maintenance
+  before they are justified.
+- Identify product ideas that are intentionally deferred.
 
 ---
 
-## 6. Information architecture
+## 4. Product Principles
 
-### Primary routes
-
-- `/` — exhibition introduction and complete gallery
-- `/panels/[slug]` — canonical detail page for an individual panel
-
-### URL-backed collection state
+Use this section to make durable product tradeoffs explicit.
 
 Examples:
 
-- `/?q=luffy`
-- `/?series=one-piece`
-- `/?theme=brotherhood`
-- `/?arc=marineford`
-- `/?series=one-piece&theme=sacrifice`
+- **User value first:** Prioritize workflows that directly help the target user
+  complete the core job.
+- **One source of truth:** Avoid duplicating domain data across components,
+  fixtures, routes, or documentation.
+- **Progressive complexity:** Start with the simplest architecture that supports
+  the current product and leaves a clear migration path.
+- **Accessible by default:** Interactive behavior must support keyboard,
+  assistive technology, sufficient contrast, and reduced-motion preferences.
+- **Responsive by design:** Layouts must work at the smallest supported viewport
+  without horizontal overflow or overlapping content.
 
-### Future routes
-
-These are not required for the first release:
-
-- `/collections/[slug]`
-- `/series/[slug]`
-- `/themes/[slug]`
-- `/essays/[slug]`
-- `/about`
+Replace or extend these principles with product-specific principles when the
+project has a clear domain.
 
 ---
 
-## 7. MVP scope
+## 5. Target Users
+
+### Primary User
+
+Describe the main user, their context, and the job they need the product to do.
+
+### Secondary Users
+
+Describe other important users, such as administrators, collaborators, internal
+operators, content editors, or reviewers.
+
+### User Constraints
+
+Document relevant constraints:
+
+- Device or viewport expectations
+- Accessibility needs
+- Content volume
+- Frequency of use
+- Technical comfort
+- Network or performance constraints
+
+---
+
+## 6. Core User Journeys
+
+Define the most important flows as short step-by-step journeys.
+
+### Journey A: First Use
+
+1. The user arrives at the product.
+2. They understand what the product does and what action to take first.
+3. They complete the first meaningful action.
+4. They receive clear feedback or see the expected result.
+
+### Journey B: Primary Workflow
+
+1. The user starts the main workflow.
+2. They provide or select the required information.
+3. The product processes, stores, displays, or routes that information.
+4. The user can review, revise, share, or continue.
+
+### Journey C: Return or Direct Link
+
+1. The user opens a saved URL, bookmark, notification, or shared link.
+2. The relevant state or resource loads directly.
+3. The user can continue without needing to recreate previous context.
+
+### Journey D: Empty or Error State
+
+1. The user reaches an empty, loading, permission-limited, or error state.
+2. The product explains what happened in user-facing language.
+3. The user has a clear next step when one is available.
+
+Add, rename, or remove journeys to match the project.
+
+---
+
+## 7. Information Architecture
+
+Document the product's primary surfaces, routes, screens, or states.
+
+### Primary Surfaces
+
+- `/` or main entry point
+- Primary list, workspace, editor, dashboard, gallery, feed, form, or tool view
+- Detail view for a single resource when applicable
+- Settings, profile, admin, or support surfaces when required
+
+### URL-Addressable State
+
+When browser history or sharing matters, specify which state must be represented
+in the URL.
+
+Examples:
+
+- Search query
+- Filters
+- Selected resource
+- Pagination or cursor position
+- Current tab or mode
+
+### Future Surfaces
+
+List routes or screens that are intentionally deferred but should remain
+architecturally possible.
+
+---
+
+## 8. MVP Scope
 
 ### Included
 
-- Exhibition-style landing composition
-- Editorial panel gallery
-- Six representative placeholder or real panels
-- Canonical typed panel data
-- Individual panel detail pages
-- Desktop focused-detail dialog or overlay
-- Immersive mobile detail presentation
-- Previous and next panel navigation
-- Keyboard navigation
-- Search
-- Series and theme filters
-- URL-backed search and filter state
-- Responsive behavior from 320px through wide desktop screens
-- Production deployment
-- Basic browser testing
-- Accessible interaction and focus management
+- The minimum complete version of the primary workflow
+- Required data model or API boundary
+- Required responsive states
+- Required accessibility behavior
+- Required empty, loading, and error states
+- Required validation, build, and test coverage
 
 ### Deferred
 
-- Authentication
-- Accounts and profiles
-- Likes, comments, ratings, and social features
-- User-submitted panels
-- Database
-- Headless CMS
-- Admin dashboard
-- Payments
-- Personalized recommendations
-- Complex analytics
-- Offline support
+- Authentication, if not needed for the MVP
+- User-generated content, if not needed for the MVP
+- Database, CMS, payment, email, analytics, or background jobs unless required
+- Advanced personalization or recommendations
 - Native mobile applications
-- Automatic manga-image extraction or OCR
+- Complex administration features
 
 ---
 
-## 8. Functional requirements
+## 9. Functional Requirements
 
-### 8.1 Exhibition introduction
+Use numbered subsections for product behavior. Keep each requirement testable.
 
-The homepage must include:
+### 9.1 Entry Experience
 
-- Exhibition title
-- Short curatorial statement
-- Featured panel or featured sequence
-- Clear transition into the main collection
-- Minimal navigation that does not compete with the artwork
+The entry surface should:
 
-The introduction should establish the design language without delaying access to the gallery.
+- Explain the product purpose quickly.
+- Present the primary action or content.
+- Avoid blocking access to the main workflow with unnecessary decoration.
+- Handle loading and empty states.
 
-### 8.2 Gallery
+### 9.2 Primary Collection or Workspace
 
-The gallery must:
+The primary workspace should:
 
-- Render from one canonical panel data source.
-- Preserve a logical and accessible DOM reading order.
-- Support portrait, landscape, square, and spread orientations.
-- Avoid a uniform grid of identical cards.
-- Use varied spans and spacing intentionally.
-- Display restrained metadata.
-- Avoid cropping artwork unless a panel explicitly permits it.
-- Work with six, 20, and 100 panel records without structural changes.
-- Provide meaningful empty states when search or filters return no results.
+- Render from canonical data or a clear API boundary.
+- Preserve a logical and accessible DOM order.
+- Support the expected item count or data volume.
+- Provide clear state for selected, active, disabled, loading, and error cases.
+- Avoid duplicating domain data inside visual components.
 
-### 8.3 Panel detail experience
+### 9.3 Detail or Focused View
 
-The detail experience must:
+When the product has individual resources, the detail view should:
 
-- Display the complete image.
-- Show title, series, creator, chapter, chapter title when available, publication year, arc, characters, themes, rank, and commentary.
-- Support previous and next navigation.
-- Support left-arrow and right-arrow navigation.
-- Close with Escape when presented as an overlay.
-- Return focus to the element that opened it.
-- Provide a canonical route at `/panels/[slug]`.
-- Load correctly when visited directly.
-- Work as an accessible dialog or overlay on desktop.
-- Work as an immersive reading view on mobile.
+- Load directly from a stable route or stable state.
+- Show complete relevant information for the resource.
+- Provide navigation back to the parent context.
+- Preserve browser history expectations.
+- Handle missing, deleted, or inaccessible resources gracefully.
 
-### 8.4 Search
+### 9.4 Search, Filtering, or Sorting
 
-Search must match against:
+When included, these controls should:
 
-- Panel title
-- Series
-- Creator
-- Character
-- Arc
-- Theme
-- Commentary keywords when appropriate
+- Match against the fields users naturally expect.
+- Be resilient to casing and formatting differences.
+- Make active constraints visible.
+- Provide a clear reset action.
+- Represent shareable state in the URL when required.
 
-Search should be case-insensitive and resilient to minor formatting differences.
+### 9.5 Forms and Mutations
 
-### 8.5 Filters
+When users create or modify data, the product should:
 
-The MVP must support:
-
-- Series
-- Theme
-
-Future filters may include:
-
-- Character
-- Arc
-- Publication year
-- Orientation
-- Rank range
-
-Filter controls must remain visually subordinate to the gallery.
-
-### 8.6 Navigation and progress
-
-The experience should provide:
-
-- Current position such as `07 / 20` in the detail experience
-- Previous and next controls
-- A clear way to return to the gallery
-- Preservation of gallery context when closing a panel overlay
-- Stable browser back and forward behavior
+- Validate input before submission where practical.
+- Show pending, success, and failure states.
+- Avoid data loss on recoverable errors.
+- Prevent duplicate submissions when appropriate.
+- Make destructive actions explicit and reversible when possible.
 
 ---
 
-## 9. Content model
+## 10. Content and Data Model
 
-Each panel record must support:
+Document the canonical shape of important product data.
+
+Include:
+
+- Required fields
+- Optional fields
+- Stable identifiers and slugs
+- Ownership rules
+- Validation rules
+- Derived fields
+- Relationships between entities
+
+Example:
 
 ```ts
-type PanelOrientation =
-  | "portrait"
-  | "landscape"
-  | "square"
-  | "spread";
-
-interface MangaPanel {
+interface Resource {
   id: string;
-  slug: string;
-  rank: number;
-
+  slug?: string;
   title: string;
-  series: string;
-  creator: string;
-
-  chapter: number | null;
-  chapterTitle?: string;
-  publicationYear?: number;
-  arc?: string;
-
-  characters: string[];
-  themes: string[];
-
-  commentary: string;
-  featured?: boolean;
-
-  image: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  };
-
-  orientation: PanelOrientation;
+  description?: string;
+  createdAt: string;
+  updatedAt?: string;
+  status: "draft" | "published" | "archived";
 }
 ```
 
-### Content rules
+Rules:
 
-- `slug` must be unique and stable.
-- `rank` must be unique within the primary collection.
-- Image dimensions must be recorded explicitly.
-- Alt text must describe the visible scene without duplicating all metadata.
-- Commentary should explain why the panel matters, not merely summarize the scene.
-- Missing chapter or publication information must be handled gracefully.
-- UI components must never duplicate panel metadata.
+- Identifiers must be unique and stable.
+- User-facing labels must handle long text.
+- Optional fields must be conditionally rendered.
+- Components must consume data through the canonical model or API boundary.
 
 ---
 
-## 10. Visual direction
+## 11. Visual Direction
 
-### Desired qualities
+Describe the visual qualities that support the product's purpose.
 
-- Contemporary museum exhibition
-- Japanese editorial design
-- Manga-volume pacing
-- Monochrome or near-monochrome palette
-- Warm paper-like background
-- Strong ink-like typography
-- Thin rules and understated catalog notation
-- Generous negative space
-- Deliberate asymmetry
-- Quiet cinematic transitions
+Include:
 
-### Avoid
+- Desired tone and density
+- Typography expectations
+- Color and contrast expectations
+- Spacing and layout expectations
+- Motion principles
+- Media or asset treatment
+- What visual patterns to avoid
 
-- SaaS dashboard styling
-- Ecommerce cards
-- Pinterest-style masonry without curatorial structure
-- Glassmorphism
-- Decorative gradients
-- Excessive badges
-- Heavy shadows
-- Rounded cards around every element
-- Large floating control surfaces
-- Aggressive image zoom on hover
-- Unnecessary animation
-- Metadata overlays that obscure artwork
-
-### Typography
-
-Use:
-
-- A distinctive display face for exhibition titles and section moments
-- A highly readable body face for commentary
-- Restrained label typography for metadata
-- Clear hierarchy without excessive type sizes or weights
-
-### Image treatment
-
-- Preserve natural aspect ratio.
-- Use full image presentation by default.
-- Do not use global `object-cover`.
-- Double-page spreads must remain complete compositions.
-- Loading placeholders should preserve layout and avoid large shifts.
+Keep this section aligned with `docs/visual-rubric.md`.
 
 ---
 
-## 11. Responsive requirements
+## 12. Responsive Requirements
 
-### Mobile: 320px and above
+### Small Viewports
 
-- No horizontal overflow.
-- Gallery becomes a deliberate sequential reading experience.
-- Artwork remains large enough to inspect.
-- Filter controls move into a compact sheet or equivalent control.
-- Detail presentation feels immersive rather than like a desktop dialog compressed onto a phone.
+- No horizontal overflow at the smallest supported width.
+- Text and controls must fit without overlapping.
+- Primary actions remain reachable.
 - Touch targets meet accessible sizing expectations.
 
-### Tablet
+### Medium Viewports
 
-- Maintain editorial rhythm.
-- Use one or two columns depending on panel proportions and available space.
-- Avoid awkward crops or excessively small spreads.
+- Layout should use available space without awkward gaps or cramped content.
+- Navigation and secondary controls remain discoverable.
 
-### Desktop
+### Large Viewports
 
-- Use asymmetric composition and varied spans.
-- Preserve generous negative space.
-- Prevent the interface from stretching into unreadably wide lines.
-- Allow featured panels and spreads to occupy meaningful horizontal space.
+- Content width should remain readable.
+- Layout should not stretch controls, cards, or text lines beyond useful limits.
+- Dense workflows should remain scannable.
+
+Define exact supported widths when the project requires them.
 
 ---
 
-## 12. Accessibility requirements
+## 13. Accessibility Requirements
 
 The product must:
 
 - Use semantic headings and landmarks.
-- Provide descriptive image alt text.
-- Maintain visible keyboard focus.
-- Support keyboard-only navigation.
-- Use an accessible dialog pattern for overlays.
-- Return focus after closing overlays.
-- Support Escape, left-arrow, and right-arrow behavior where appropriate.
+- Maintain logical reading order.
+- Provide visible focus states.
+- Support keyboard-only operation for interactive workflows.
 - Avoid relying on color alone for meaning.
-- Respect `prefers-reduced-motion`.
 - Maintain sufficient contrast.
-- Preserve logical reading order independently of visual layout.
-- Avoid inaccessible text embedded only inside images where possible.
+- Respect `prefers-reduced-motion`.
+- Provide accessible names for controls.
+- Use accessible dialog, menu, tab, and disclosure patterns where relevant.
+- Announce or expose loading, error, and success states appropriately.
 
 ---
 
-## 13. Performance requirements
+## 14. Performance Requirements
 
-The MVP should:
+Document targets that matter for the product.
 
-- Use optimized local images.
-- Record image width and height to prevent layout shift.
-- Load non-critical images lazily.
-- Prioritize only the featured or first visible artwork.
-- Avoid shipping unnecessary client-side JavaScript.
-- Use Server Components by default.
+Baseline expectations:
+
+- Avoid unnecessary client-side JavaScript.
 - Keep dependencies minimal.
-- Avoid loading all high-resolution images at full size simultaneously.
-- Pass a production build before release.
+- Prevent layout shift for known-size media.
+- Lazy-load non-critical content.
+- Avoid long-running work on the main thread.
+- Pass the production build before release.
 
-Initial targets:
-
-- No visible layout shift caused by panel images.
-- Responsive interaction on mid-range mobile hardware.
-- Reasonable first-page payload despite an image-heavy design.
-- No long-running client-side work for filtering 100 records.
+Add product-specific targets for payload size, response time, data volume, or
+interaction latency when measurable.
 
 ---
 
-## 14. SEO and sharing
+## 15. SEO, Sharing, and Metadata
 
-Each panel route should provide:
+When public discoverability or sharing matters:
 
-- Unique page title
-- Description derived from panel metadata and commentary
-- Canonical URL
-- Social sharing image when available
-- Series, creator, and chapter information
-- Structured metadata where practical
-
-The homepage should describe the collection as a curated personal exhibition.
+- Each canonical route should have a meaningful title and description.
+- Shared links should load the intended state or resource.
+- Social metadata should reflect the specific page.
+- Canonical URLs should avoid duplicate-content confusion.
+- Private or authenticated content should not leak sensitive metadata.
 
 ---
 
-## 15. Success criteria for the six-panel vertical slice
+## 16. Success Criteria
 
-The first milestone is complete when:
+Define what must be true before the current milestone is complete.
 
-- Six panels cover portrait, landscape, square, and spread formats.
-- The homepage communicates an exhibition identity.
-- The gallery does not resemble a uniform card grid.
-- Every panel is rendered from the canonical data source.
-- A panel can be opened, navigated, closed, and visited directly by URL.
-- Keyboard behavior works.
-- The experience works at 320px, 768px, and 1440px.
-- Artwork remains visually dominant.
-- Search and filters can be deferred until the visual slice is approved, but the architecture must allow them.
-- Lint, type checking, production build, and initial browser tests pass.
-- The deployed preview can be reviewed on desktop and mobile.
+Example:
+
+- The primary workflow can be completed end to end.
+- Data renders from the canonical source or API boundary.
+- Required empty, loading, and error states exist.
+- Keyboard behavior works for all required interactions.
+- The UI works at the smallest, medium, and large supported viewports.
+- Lint, type checking, production build, and required tests pass.
+- The implementation matches the visual rubric when visual quality is in scope.
 
 ---
 
-## 16. Future expansion
+## 17. Future Expansion
 
-Potential future capabilities:
+List likely future capabilities and the constraints they should preserve.
 
-- Curated thematic collections
-- Long-form essays
-- Series-specific views
-- Timeline views
-- Guest curators
-- CMS-backed editing
-- Private draft panels
+Examples:
+
+- Additional resource types
+- Team or account features
+- CMS or database-backed editing
+- Admin workflows
+- Integrations
+- Analytics
 - Localization
-- Collection statistics
-- Animated exhibition transitions
-- Audio commentary
-- User accounts and saved favorites
+- Offline support
+- Native applications
 
-These additions must preserve the core principle that the artwork remains the dominant experience.
+Future work should preserve the product principles and avoid invalidating the
+current architecture without an explicit architecture update.

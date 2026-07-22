@@ -1,41 +1,53 @@
 # Visual Evaluation Rubric
 
-Score each category from 0 to 2.
+Use this rubric when visual quality is part of a task. Score each category from
+0 to 2, then compare the result with the completion threshold defined by the
+task or product documentation.
 
-## Artwork priority
+This file is intentionally generic. Replace category wording when a project has
+a stronger domain-specific visual direction.
 
-- 0: Metadata, navigation, or decoration competes with the artwork.
-- 1: Artwork is visible but shares equal weight with interface chrome.
-- 2: Artwork clearly dominates every gallery composition.
+## Purpose and Hierarchy
 
-## Editorial character
+- 0: The primary user task or content is hard to identify.
+- 1: The main content is visible, but secondary elements compete with it.
+- 2: The layout immediately communicates what matters and what to do next.
 
-- 0: Looks like a SaaS dashboard or ecommerce grid.
-- 1: Contains some editorial spacing but remains conventionally card-based.
-- 2: Deliberate asymmetry, sequencing, rhythm, and negative space are evident.
+## Layout and Composition
 
-## Ratio handling
+- 0: Spacing, alignment, or grouping feels arbitrary or broken.
+- 1: The layout is usable but generic, cramped, or uneven.
+- 2: Spacing, alignment, density, and grouping feel intentional at every
+  supported viewport.
 
-- 0: Images crop or distort unpredictably.
-- 1: Common ratios work, but unusual panels create awkward gaps.
-- 2: Portraits, landscapes, squares, and spreads all feel intentional.
+## Responsiveness
 
-## Typography
+- 0: Content overlaps, clips, or creates horizontal overflow.
+- 1: The layout adapts, but some controls, text, or media feel awkward.
+- 2: The experience feels deliberately designed for small, medium, and large
+  viewports.
 
-- 0: Generic application typography.
-- 1: Appropriate fonts but weak hierarchy.
-- 2: Feels like museum notation combined with Japanese editorial design.
+## Typography and Readability
 
-## Mobile reading
+- 0: Text is hard to scan, inconsistent, or too small to read comfortably.
+- 1: Text is readable, but hierarchy or rhythm is weak.
+- 2: Typography creates clear hierarchy, supports scanning, and fits its
+  containers without overflow.
 
-- 0: Desktop grid merely collapses into one column.
-- 1: Usable but visually ordinary.
-- 2: Feels intentionally composed for sequential manga reading.
+## Interaction States
 
-## Restraint
+- 0: Important hover, focus, active, disabled, loading, or error states are
+  missing.
+- 1: States exist but are incomplete, inconsistent, or visually noisy.
+- 2: States are clear, accessible, consistent, and proportional to the
+  importance of the action.
 
-- 0: Excessive animation, effects, badges, gradients, or UI chrome.
-- 1: Mostly restrained with a few distracting elements.
-- 2: Every decorative treatment supports artwork, rhythm, or navigation.
+## Visual Restraint
 
-A visual task should not be marked complete below 9/12.
+- 0: Decorative effects, animation, colors, or surfaces distract from the
+  product purpose.
+- 1: The interface is mostly restrained but includes avoidable visual clutter.
+- 2: Every visual treatment supports hierarchy, usability, brand, or content.
+
+A visual task should generally not be marked complete below 9/12 unless the task
+defines a different threshold.
